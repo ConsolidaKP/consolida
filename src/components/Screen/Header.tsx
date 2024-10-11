@@ -1,0 +1,30 @@
+'use client'
+
+import React from 'react';
+import styled from 'styled-components';
+
+const HeaderContainer = styled.header`
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+`;
+
+const Title = styled.h1`
+  margin: 0;
+  color: #333;
+`;
+
+interface HeaderProps {
+  activeSection: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ activeSection }) => {
+  return (
+    <HeaderContainer>
+      <Title>{activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}</Title>
+      {/* Aquí puedes añadir más elementos según la sección activa */}
+    </HeaderContainer>
+  );
+};
+
+export default Header;

@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   }
 }
 
-
 export async function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }))
 }
