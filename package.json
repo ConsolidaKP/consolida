@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.10.2",
     "@emotion/react": "^11.13.3",
     "@hookform/resolvers": "^3.9.0",
     "@mantine/core": "^7.13.2",
