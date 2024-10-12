@@ -1,11 +1,13 @@
 'use client'
 
+import { useAuth } from "@/hooks/useAuth";
 import { logIn, logOut, whoAmI } from "@/services/auth.service";
 import { createContext, useEffect, useState } from "react";
 
 interface AuthContextValues {
   loading: boolean;
   token: string | null;
+  isAuthenticated: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   login: (credentials: Credentials) => Promise<{ error: string } | undefined | void>;
@@ -15,6 +17,7 @@ interface AuthContextValues {
 const defaultProvider: AuthContextValues = {
   loading: false,
   token: null,
+  isAuthenticated: false,
   setLoading: () => Boolean,
   setToken: () => null,
   login: () => Promise.resolve(),
@@ -25,6 +28,7 @@ const AuthContext = createContext<AuthContextValues>(defaultProvider);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
   const [token, setToken] = useState<string | null>(defaultProvider.token);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(defaultProvider.isAuthenticated);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -34,6 +38,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
           const response = await whoAmI(storedToken);
           setToken(storedToken);
+          setIsAuthenticated(true);
         } catch (error) {
           console.error('Error from whoAmI:', error);
           localStorage.removeItem('accessToken');
@@ -83,6 +88,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const values: AuthContextValues = {
     loading,
     token,
+    isAuthenticated,
     setLoading,
     setToken,
     login: handleLogin,
@@ -96,5 +102,5 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthContext, AuthProvider, useAuth };
 

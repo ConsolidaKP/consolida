@@ -1,0 +1,23 @@
+type JWTPayload = {
+  bodega: number;
+  caja: number;
+  email: string;
+  empresa: number;
+  envivo: boolean;
+  exp: number;
+  iat: number;
+  ma: string;
+  mb: string;
+  mc: string;
+  md: string;
+  moneda: number;
+  pais: number;
+  prodprec: number;
+  psat_tipo: number;
+  ptiene_sat: boolean;
+  sub: number;
+  supervisor: boolean;
+  tipo: number;
+  usuario: number;
+  vendedor: number;
+};
