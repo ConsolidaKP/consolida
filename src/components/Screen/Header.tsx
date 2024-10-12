@@ -4,15 +4,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
-  left: 10px;
-  background-color: #ffffff;
-  padding: 2px;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+  background-color: #2C3E50;
+  font-size: 12px;
+  font-weight: normal;
+  width: 100%;
+  top: 0px;
+  position: fixed;
+  left: 0px;
+  height: 50px;
 `;
 
 const Title = styled.h1`
-  margin: 2px;
-  color: #333;
+  color: #FFFFFF;
+  margin-left: 5px;
+  vertical-align: middle;
 `;
 
 interface HeaderProps {

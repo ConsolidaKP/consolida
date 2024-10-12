@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const SideBarContainer = styled.nav<{ isOpen: boolean }>`
-  top: 70px;
+  top: 50px;
   width: 45px;
-  background-color: #f0f0f0;
+  background-color: #2C3E50;
   padding: 20px 0;
   display: flex;
   flex-direction: column;
