@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const AIContainer = styled.div`
   position: fixed;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
   background-color: #007bff;
   color: white;

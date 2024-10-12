@@ -45,7 +45,7 @@ const LoginForm: React.FC = () => {
     setError('');
     try {
       await login({ email, password });
-      router.push('/sales/dashboard');
+      router.push('/reports/dashboard');
     } catch (err) {
       setError('Login failed. Please check your credentials.');
     }

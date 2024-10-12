@@ -40,12 +40,12 @@ export const GlobalStyles = createGlobalStyle`
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-secondary);
-    margin-bottom: var(--spacing-medium);
+    margin-bottom: var(--spacing-small);
   }
 
   button {
     font-size: var(--font-size-normal);
-    padding: var(--spacing-small) var(--spacing-medium);
+    padding: var(--spacing-small) var(--spacing-small);
     border-radius: var(--border-radius);
     border: none;
     cursor: pointer;
