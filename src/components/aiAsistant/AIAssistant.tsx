@@ -5,11 +5,11 @@ import styled from 'styled-components';
 
 const AIContainer = styled.div`
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 5px;
+  right: 5px;
   background-color: #007bff;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border-radius: 20px;
   cursor: pointer;
 `;

@@ -23,30 +23,17 @@ const TabButton = styled.button<{ active: boolean }>`
   width: 40px;
   height: 40px;
   margin: 5px 0;
-  border: '1px solid black';
-  background-color: ${props => props.active ? '#007bff' : 'transparent'};
+  border: 1px solid black;
+  background-color: ${props => props.active ? '#007bff' : '#FFFFFF'};
   color: ${props => props.active ? 'white' : 'black'};
-  text-align: left;
+  text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 20px 20px 20px 20px;
-
+  
   &:hover {
     background-color: ${props => props.active ? '#007bff' : '#e0e0e0'};
   }
-`;
-
-const MenuButton = styled.button`
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 1001;
-  border-radius: 5px;
 `;
 
 interface SideBarProps {
@@ -58,18 +45,15 @@ const SideBar: React.FC<SideBarProps> = ({ activeSection, setActiveSection }) =>
   const [isOpen, setIsOpen] = useState(false);
 
   const sections = [
-    { id: 'overview', name: 'Overview' },
-    { id: 'sales', name: 'Sales' },
-    { id: 'inventory', name: 'Inventory' },
-    { id: 'customers', name: 'Customers' },
-    { id: 'reports', name: 'Reports' },
+    { id: 'Dashboard', name: 'D' },
+    { id: 'sales',  name: 'S' },
+    { id: 'inventory', name: 'I' },
+    { id: 'customers', name: 'C' },
+    { id: 'reports', name: 'R' },
   ];
 
   return (
     <>
-      <MenuButton onClick={() => setIsOpen(!isOpen)}>
-        ☰
-      </MenuButton>
       <SideBarContainer isOpen={isOpen}>
         {sections.map(section => (
           <TabButton
