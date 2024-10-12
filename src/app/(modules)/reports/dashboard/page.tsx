@@ -5,9 +5,7 @@ import styled from 'styled-components';
 import SideBar from '@/components/Screen/SideBar';
 import Header from '@/components/Screen/Header';
 import AIAssistant from '@/components/aiAsistant/AIAssistant';
-import Loading from '@/components/Loading';
-import { useAuth } from '@/contexts/authContext';
-import { useRouter } from 'next/navigation';
+import withAuth from '@/components/auth/withAuth';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -22,22 +20,6 @@ const ContentArea = styled.main`
 
 const Dashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState('overview');
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!user) {
-    return null; // O podrías mostrar un mensaje de "No autorizado"
-  }
 
   return (
     <DashboardContainer>
@@ -53,4 +35,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default withAuth(Dashboard);

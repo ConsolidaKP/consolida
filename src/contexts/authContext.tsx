@@ -1,73 +1,100 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginAction, logoutAction, getProfileAction } from '@/app/actions/auth';
+import { logIn, logOut, whoAmI } from "@/services/auth.service";
+import { createContext, useEffect, useState } from "react";
 
-interface AuthContextType {
-  user: any | null;
+interface AuthContextValues {
   loading: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
-  logout: () => Promise<void>;
+  token: string | null;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  login: (credentials: Credentials) => Promise<{ error: string } | undefined | void>;
+  logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const defaultProvider: AuthContextValues = {
+  loading: false,
+  token: null,
+  setLoading: () => Boolean,
+  setToken: () => null,
+  login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+};
+const AuthContext = createContext<AuthContextValues>(defaultProvider);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
+  const [token, setToken] = useState<string | null>(defaultProvider.token);
 
   useEffect(() => {
     const initAuth = async () => {
-      setLoading(true);
       try {
-        const profile = await getProfileAction();
-        setUser(profile);
+        const storedToken = window.localStorage.getItem('accessToken');
+        setLoading(true);
+        try {
+          const response = await whoAmI(storedToken);
+          setToken(storedToken);
+        } catch (error) {
+          console.error('Error from whoAmI:', error);
+          localStorage.removeItem('accessToken');
+        } finally {
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Failed to get user profile:', error);
-      } finally {
+        console.error('Unexpected error in initAuth:', error);
         setLoading(false);
       }
     };
 
-    initAuth();
-  }, []);
 
-  const login = async (credentials: { email: string; password: string }) => {
+    initAuth()
+  }, [])
+
+  const handleLogin = async (credentials: Credentials) => {
     setLoading(true);
     try {
-      const data = await loginAction(credentials.email, credentials.password);
-      setUser(data.user);
+      const res = await logIn(credentials);
+
+      if (res.error)
+        return res;
+
+      const { access_token, ...userData } = res
+
+      setToken(access_token);
+
+      window.localStorage.setItem('accessToken', access_token)
+
+
     } catch (error) {
       console.error("Login error:", error);
-      throw error;
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 2000);
     }
   };
 
-  const logout = async () => {
+  const handleLogout = async () => {
     setLoading(true);
-    try {
-      await logoutAction();
-      setUser(null);
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      setLoading(false);
-    }
+    setToken(null);
+    window.localStorage.removeItem('accessToken');
+    await logOut();
+    setLoading(false);
+  };
+
+  const values: AuthContextValues = {
+    loading,
+    token,
+    setLoading,
+    setToken,
+    login: handleLogin,
+    logout: handleLogout,
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={values}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export { AuthContext, AuthProvider };
+
